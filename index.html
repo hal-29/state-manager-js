@@ -2,12 +2,122 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>FP Todo App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer type="module" src="/src/main.ts"></script>
+    <style>
+      .log-entry:nth-child(odd) {
+        background: #f8fafc;
+      }
+      .history-item {
+        transition: background 0.2s;
+      }
+      #actionLog {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      #historyStack {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
   </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+  <body class="bg-gray-50 h-svh">
+    <div class="container mx-auto px-4 py-4">
+      <div
+        class="max-w-7xl mx-auto grid grid-cols-1 grid-rows-[30svh_65svh] lg:grid-cols-2 gap-6"
+      >
+        <!-- Left Column - Controls -->
+        <div class="bg-white rounded-xl shadow p-6">
+          <h2 class="text-xl font-semibold mb-4">Todo Controls</h2>
+          <form action="" id="todoForm" class="flex mb-4">
+            <input
+              type="text"
+              id="todoInput"
+              placeholder="What needs doing?"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              autofocus
+            />
+            <button
+              type="submit"
+              id="addBtn"
+              class="bg-indigo-600 text-white px-4 py-2 rounded-r-lg hover:bg-indigo-700 transition"
+            >
+              Add
+            </button>
+          </form>
+
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <button
+              id="undoBtn"
+              class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+              disabled
+            >
+              Undo
+            </button>
+            <button
+              id="redoBtn"
+              class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+              disabled
+            >
+              Redo
+            </button>
+          </div>
+
+          <button
+            id="clearBtn"
+            class="w-full bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition"
+          >
+            Clear All Todos
+          </button>
+        </div>
+
+        <!-- Right Column - Todos -->
+        <div class="bg-white rounded-xl shadow p-6">
+          <h2 class="text-xl font-semibold mb-4">Todo List</h2>
+          <div id="todoList" class="divide-y overflow-y-auto h-52"></div>
+        </div>
+
+        <!-- Button Row - State Debugger -->
+        <div class="bg-white rounded-xl shadow p-6 col-span-full">
+          <h2 class="text-xl font-semibold mb-4">State Manager</h2>
+
+          <div class="mb-6">
+            <h3 class="font-medium mb-2">Current State</h3>
+            <pre
+              id="currentState"
+              class="bg-gray-50 p-3 rounded text-xs overflow-x-auto h-32"
+            ></pre>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="font-medium mb-2">History Stack</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div
+                id="pastHistory"
+                class="border overflow-y-auto rounded-lg h-56"
+              >
+                <div class="p-2 text-sm text-gray-500">No history yet</div>
+              </div>
+              <div
+                id="futureHistory"
+                class="border overflow-y-auto rounded-lg h-56"
+              >
+                <div class="p-2 text-sm text-gray-500">No future history</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-medium mb-2">Logs</h3>
+            <div
+              id="actionLog"
+              class="border h-24 p-3 text-xs font-mono rounded-lg bg-gray-950 text-gray-100 overflow-y-auto"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
